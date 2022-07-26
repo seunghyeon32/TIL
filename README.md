@@ -11,3 +11,16 @@
 | 22.07.25    | [컴포넌트 반복](React/05_Component반복.md)             | - 자바스크립트 배열의 map() 함수<br />- 데이터 배열을 컴포넌트 배열로 변환<br />- key<br />- 실습 |
 | 22.07.25    | [컴포넌트: 라이프사이클 메서드](React/06_LifeCycle.md) | - 라이프사이클 메서드의 이해<br />- 라이프사이클 메서드 살펴보기<br />- 라이프사이클 메서드 실습 |
 | 22.07.26    | [Hooks](React/07_Hooks.md)                             | - useState<br />- useEffect<br />- useReducer<br />- useMemo<br />- useCallback<br />- useRef<br />- 커스텀 Hooks<br />- 다른 Hooks |
+
+| Date     | Path                                                    | Content                                                      |
+| -------- | ------------------------------------------------------- | ------------------------------------------------------------ |
+| 22.07.26 | [컴포넌트 스타일링](React/08_ComponentStyling.md)       | - CSS<br />- Sass<br />- CSS module<br />- Styled-components |
+| 22.07.26 | [일정관리 웹 애플리케이션 만들기](React/09_Schedule.md) | - 일정관리 UI 구성 및 기능 구현                              |
+| 22.07.26 | [컴포넌트 성능 최적화](React/10_컴포넌트성능최적화.md)  | - 많은 데이터 렌더링<br />- 성능 모니터링<br />- 느려지는 원인 분석<br />- React.memo<br />- onToggle, onRemove 함수가 바뀌지 않게 하기<br />- 불변성의 중요성<br />- TodoList  컴포넌트 최적화<br />- react-virtualized를 사용한 렌더링 최적화 |
+|          |                                                         |                                                              |
+|          |                                                         |                                                              |
+|          |                                                         |                                                              |
+|          |                                                         |                                                              |
+|          |                                                         |                                                              |
+|          |                                                         |                                                              |
+
