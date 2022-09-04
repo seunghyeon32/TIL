@@ -1072,3 +1072,282 @@ const z4 = new Bmw("black");
 
 
 ## 제네릭 (Generic)
+
+- class 나 함수, 인터페이스를 다양한 타입으로 재사용 가능
+- 선언 시, 타입 파라미터만 작성하고 생성 시점에 사용하는 타입 결정
+
+```typescript
+function getSize(arr: number[] | string[]): number {
+    return arr.length;
+}
+
+const arr1 = [1, 2, 3];
+getSize(arr1); // 3
+
+const arr2 = ["a", "b", "c"];
+getSize(arr2); 
+```
+
+```typescript
+// Generic
+// <T>: T는 다른 문자를 사용해도 됨
+function getSize<T>(arr: T[]): number {
+    return arr.length;
+}
+
+const arr1 = [1, 2, 3];
+getSize<number>(arr1);
+// getSize<number | string>(arr1);
+
+const arr2 = ["a", "b", "c"];
+getSize<string>(arr2); 
+```
+
+
+
+```typescript
+interface Mobile<T> {
+    name: string;
+    price: number;
+    option: T;
+}
+
+// option 객체의 모습이 정해져 있다면,
+// const m1: Mobile<{ color: string; coupon: boolean; }> = {
+const m1: Mobile<object> = {
+    name: "s21",
+    price: 1000,
+    option: {
+        color: "red",
+        coupon: false,
+    },
+}
+
+const m2: Mobile<string> = {
+    name: "s20",
+    price: 900,
+    option: "good",
+}
+```
+
+```typescript
+interface User {
+    name: string;
+    age: number;
+}
+
+interface Car {
+    name: string;
+    color: string;
+}
+
+interface Book {
+    price: number;
+}
+
+const user: User = { name: "a", age: 10 };
+const car: Car = { name: "bmw", color: "red" };
+const book: Book = { price: 3000 }; // 매개 변수 name이 없음
+
+// name: string인 객체를 확장한 형태
+// name에는 string만 올 수 있음
+function showName<T extends {name: string}>(data: T): string {
+    return data.name;
+}
+
+showName(user);
+showName(car);
+showName(book);  // name이 없으므로 에러 발생
+```
+
+
+
+## 유틸리티 타입 (Utility Types)
+
+- https://www.typescriptlang.org/docs/handbook/utility-types.html
+
+- `keyof` : interface의 key 값들을 유니온 형태로 받을 수 있음
+
+```typescript
+interface User {
+    id: number;
+    name: string;
+    age: number;
+    gender: "m" | "f";
+}
+
+type UserKey = keyof User;   // 'id' | 'name' | 'age' | 'gender'
+
+const uk: UserKey = "";    // 에러발생
+const uk: UserKey = "id";  // User 인터페이스의 키값중 하나를 입력
+```
+
+
+
+- `Partial<T>` : property를 모두 optional로 바꿔줌
+
+```typescript
+interface User {
+    id: number;
+    name: string;
+    age: number;
+    gender: "m" | "f";
+}
+
+// User 인터페이스에서 존재하는 속성 중 필요한 속성만 사용할 수 있음
+let admin: Partial<User> = { 
+	id: 1,
+    name: "hyeon"
+}
+```
+
+
+
+- `Required<t>` : 모든 property를 필수로 바꿔줌
+
+```typescript
+interface User {
+    id: number;
+    name: string;
+    age?: number;
+}
+
+// Error: Required로 인해 age도 필수 property가 되기 때문
+let admin: Required<User> = { 
+	id: 1,
+    name: "hyeon"
+    // age: 30,  // 작성함으로 인해 에러 제거
+}
+```
+
+
+
+- `Readonly<T>` : 읽기 전용
+
+```typescript
+interface User {
+    id: number;
+    name: string;
+    age?: number;
+}
+
+let admin: Readonly<User> = { 
+	id: 1,
+    name: "hyeon"
+}
+
+admin.id = 4; // Error: 수정 불가능
+```
+
+
+
+- `Record<K, T>` 
+  - `K` : key / `T`: type
+
+```typescript
+interface Score {
+    "1": "A" | "B" | "C" | "D";
+    "2": "A" | "B" | "C" | "D";
+    "3": "A" | "B" | "C" | "D";
+    "4": "A" | "B" | "C" | "D";
+}
+
+const score: Score = {
+    1: "A",
+    2: "C",
+    3: "D",
+    4: "B",
+}
+```
+
+```typescript
+// Record<K, T>
+
+type Grade = "1" | "2" | "3" | "4";
+type Score = "A" | "B" | "C" | "D";
+
+const Record: Record<Grade, Score> = {
+    1: "A",
+    2: "C",
+    3: "D",
+    4: "B",
+}
+```
+
+```typescript
+interface User {
+    id: number;
+    name: string;
+    age: number;
+}
+
+function isValid(user: User) {
+    const result: Record<keyof User, boolean> = {
+        id: user.id > 0,
+        name: user.name !== '',
+        age: user.age > 0
+    }
+    return result;
+}
+```
+
+
+
+- `Pick<T, K>` : T 타입에서 K 속성만 골라서 사용
+
+```typescript
+interface User {
+    id: number;
+    name: string;
+    age: number;
+    gender: "M" | "W";
+}
+
+// User에서 id, name만 골라서 사용
+const admin = Pick<User, "id"|"name"> = {
+    id: 0,
+    name: "hyeon"
+}
+```
+
+
+
+- `Omit<T, K>` :  T 타입에서 K 속성만 생략하여 사용
+
+```typescript
+interface User {
+    id: number;
+    name: string;
+    age: number;
+    gender: "M" | "W";
+}
+
+// User에서 age, gender를 제외하고 사용
+const admin = Omit<User, "age"| "gender"> = {
+    id: 0,
+    name: "hyeon"
+}
+```
+
+
+
+- `Exclude<T1, T2>` : T1에서 T2와 겹치는 타입을 제외하고 사용
+
+```typescript
+type T1 = string | number;
+type T2 = Exclude<T1, number>;  // T1에서 number를 제외하고 사용하기 때문에 string이 됨
+```
+
+❗ Omit은 property를 제외하고 사용
+
+❗ Exclude는 type을 제외하고 사용
+
+
+
+- `NonNullable<Type>` : null과 undefined을 제외한 타입 생성
+
+```typescript
+type T1 = string | null | undefined | void;
+type T2 = NonNullable<T1>; // string | void
+```
+
