@@ -20,6 +20,8 @@ document.body.appendChild(renderer.domElement);
 
 - 화면을 찍어내는 역할
 
+
+
 ## Camera
 
 ✔ [three.js camera docs](https://threejs.org/manual/#en/cameras)
@@ -115,20 +117,63 @@ scene.add( spotLightHelper );
 
 ✔ [three.js MeshPhongMaterial docs](https://threejs.org/docs/#api/en/materials/MeshPhongMaterial)
 
+
+
 ## Controls
 
 ### 🤍 **`OrbitControls` | 마우스로 카메라 제어**
 
-[three.js](https://threejs.org/docs/?q=Orbit#examples/ko/controls/OrbitControls)
+✔ [three.js OrbitControls docs](https://threejs.org/docs/?q=Orbit#examples/ko/controls/OrbitControls)
 
 ```jsx
 // OrbitControls: 카메라 컨트롤
-import { OrbitControls } from "<https://unpkg.com/three@0.108.0/examples/jsm/controls/OrbitControls.js>";
+import { OrbitControls } from "https://unpkg.com/three@0.108.0/examples/jsm/controls/OrbitControls.js";
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
 // OrbitControls 옵션
-// enableDamping: 움직임이 부드러워짐
-controls.enableDamping = true;
+
+// angle 범위 정하기
+controls.minPolarAngle = Math.radians(20);   
+controls.maxPolarAngle = Math.radians(120);
+
+controls.target.set(0, 10, 0); 
+controls.autoRotate = true;     // 자동회전
+controls.autoRotateSpeed = 1;   // 속도조정 (default: 1)
+controls.enablePan = false;     // enablePan: 키보드 조작이 안됨
+controls.enableZoom = false;    // enableZoom: zoomOut이 안됨
+controls.enableDamping = true;   // enableDamping: 움직임이 부드러워짐
 ```
 
+
+
+## Group
+
+### 🤍 `Group`
+
+```jsx
+const group = new THREE.Group();
+group.add();        // 그룹화하고 싶은 요소들 넣기
+scene.add(group);   // 씬에 그룹 넣기
+```
+
+
+
+## Lights
+
+✔ [three.js light docs](https://threejs.org/docs/index.html#api/en/lights/Light)
+
+```jsx
+//직사광
+const color = 0xffffff;  // 조명색
+const intensity = 1.3;   // 빛의 세기
+const light = new THREE.DirectionalLight(color, intensity); // 직사광
+light.position.set(20, 80, 50);         // 조명 위치
+light.target.position.set(0, 20, 0);    // 조명이 향하는 위치
+scene.add(light);
+scene.add(light.target);
+
+// helper를 통해 빛의 움직임이 보임
+// const helper = new THREE.DirectionalLightHelper(light, 5);
+// scene.add(helper);
+```
