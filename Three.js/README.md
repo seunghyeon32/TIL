@@ -177,3 +177,60 @@ scene.add(light.target);
 // const helper = new THREE.DirectionalLightHelper(light, 5);
 // scene.add(helper);
 ```
+
+
+
+## Examples
+
+### 지구 만들기
+
+```js
+// 우주 공간 만들기
+{
+    const imageLoader = new THREE.TextureLoader();
+    imageLoader.load("./image/universe.jpg", (data) => {
+        
+        // 로드한 우주이미지를 map으로 생성
+        // 배경으로 사용하기 때문에 BackSide 설정
+        const material_univ = new THREE.MeshBasicMaterial({
+            map: data,
+            side: THREE.BackSide,
+        });
+        const geometry_univ = new THREE.SphereGeometry(400, 32, 32);
+        const universe = new THREE.Mesh(geometry_univ, material_univ);
+        scene.add(universe);
+    });
+}
+
+// 지구 만들기
+{
+    const imageLoader = new THREE.TextureLoader();
+    
+    imageLoader.load("./image/earth.jpg", (data) => {
+        
+        // 로드한 '지구이미지'를 map으로 생성
+        const material_earth = new THREE.MeshBasicMaterial({
+            map: data,
+        });
+        // (지)구 생성
+        const geometry_earth = new THREE.SphereGeometry(80, 32, 32);
+        const earth = new THREE.Mesh(geometry_earth, material_earth);
+        scene.add(earth);
+    });
+}
+
+
+const imageLoader = new THREE.TextureLoader();
+
+// TextureLoader
+imageLoader.load("./image/earth.jpg", (data) => {
+    //지구 만들기 
+    const geometry_earth = new THREE.SphereGeometry(80, 32, 32);
+    const material_earth = new THREE.MeshBasicMaterial({
+        map: data, // 로드한 지구이미지를 map으로 생성
+    });
+    const earth = new THREE.Mesh(geometry_earth, material_earth);
+    scene.add(earth);
+});
+```
+
