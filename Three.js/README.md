@@ -9,7 +9,9 @@
 **필수적으로 넣어줘야 함 !!**
 
 ```jsx
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+// antialias: true => 부드럽게
+// alpha: true => 배경을 투명으로
 
 // 화면 사이즈를 정해준다
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -180,6 +182,63 @@ scene.add(light.target);
 
 
 
+## Fog
+
+```jsx
+//안개
+const near = 100;
+const far = 300;
+const color = "#000000";
+scene.fog = new THREE.Fog(color, near, far);
+```
+
+
+
+## Raycaster
+
+✔ [three.js Raycaster docs](https://threejs.org/docs/index.html?q=ray#api/en/core/Raycaster)
+
+- 클릭 감지
+
+```jsx
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+
+function onPointerMove( event ) {
+
+	// calculate pointer position in normalized device coordinates
+	// (-1 to +1) for both components
+
+	pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+}
+
+function render() {
+
+	// update the picking ray with the camera and pointer position
+	raycaster.setFromCamera( pointer, camera );
+
+	// calculate objects intersecting the picking ray
+	const intersects = raycaster.intersectObjects( scene.children );
+
+	for ( let i = 0; i < intersects.length; i ++ ) {
+
+		intersects[ i ].object.material.color.set( 0xff0000 );
+
+	}
+
+	renderer.render( scene, camera );
+
+}
+
+window.addEventListener( 'pointermove', onPointerMove );
+
+window.requestAnimationFrame(render);
+```
+
+
+
 ## Examples
 
 ### 지구 만들기
@@ -233,4 +292,6 @@ imageLoader.load("./image/earth.jpg", (data) => {
     scene.add(earth);
 });
 ```
+
+
 
